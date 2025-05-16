@@ -28,7 +28,7 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        main: "client/index.html",
+        main: path.resolve(import.meta.dirname, "client/index.html"),
       },
     },
   },
