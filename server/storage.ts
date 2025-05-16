@@ -570,4 +570,5 @@ export class MemStorage implements IStorage {
 }
 
 // Usamos o MemStorage para armazenamento em memória
+// Utiliza armazenamento em memória para eliminar dependência do banco de dados
 export const storage = new MemStorage();

@@ -45,7 +45,7 @@ O Gestor SEO Pro é um sistema completo para gerenciamento de projetos SEO, dese
    ```
    npm run dev
    ```
-4. O sistema iniciará automaticamente em seu navegador padrão no endereço http://localhost:5000
+4. O sistema iniciará automaticamente em seu navegador padrão no endereço http://localhost:3000
 
 ### Criar Atalho para Iniciar Rapidamente (Recomendado)
 1. Crie um arquivo batch (.bat) com o seguinte conteúdo:
