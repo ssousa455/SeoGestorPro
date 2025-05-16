@@ -1,0 +1,327 @@
+import { useState } from "react";
+import { ProjectSelector } from "@/components/ui/project-selector";
+import { Button } from "@/components/ui/button";
+import { ReportCard } from "@/components/reports/ReportCard";
+import { PlusCircle, FileText, Share2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useToast } from "@/hooks/use-toast";
+
+const reportFormSchema = z.object({
+  projectId: z.string().optional(),
+  title: z.string().min(3, {
+    message: "O título do relatório deve ter pelo menos 3 caracteres",
+  }),
+  description: z.string().optional(),
+  type: z.string({
+    required_error: "Selecione o tipo de relatório",
+  }),
+  period: z.string({
+    required_error: "Selecione o período",
+  }),
+});
+
+type ReportFormValues = z.infer<typeof reportFormSchema>;
+
+// Dados mockados de relatórios
+const mockReports = [
+  {
+    id: 1,
+    title: "Relatório Mensal de Desempenho SEO",
+    description: "Análise consolidada do desempenho SEO para todos os projetos.",
+    date: "10/04/2023",
+    chart: {
+      data: [
+        { month: "Jan", position: 18 },
+        { month: "Fev", position: 15 },
+        { month: "Mar", position: 16 },
+        { month: "Abr", position: 12 },
+        { month: "Mai", position: 11 },
+        { month: "Jun", position: 10 },
+        { month: "Jul", position: 9 },
+        { month: "Ago", position: 8 },
+      ],
+    },
+    metrics: {
+      trackedKeywords: 342,
+      firstPageKeywords: 87,
+      firstPagePercentage: 25,
+      implementedImprovements: 24,
+      totalImprovements: 48,
+      positionChange: "+12.5%",
+    },
+    recommendations: [
+      "Implementar as melhorias pendentes de alto impacto para aumentar o desempenho geral",
+      "Analisar clusters de keywords com baixo desempenho",
+      "Revisar e atualizar conteúdo para keywords com posições entre #10-#20",
+    ],
+  },
+  {
+    id: 2,
+    title: "Análise de Concorrentes",
+    description: "Comparação do desempenho SEO com principais concorrentes.",
+    date: "02/04/2023",
+    chart: {
+      data: [
+        { month: "Jan", position: 18 },
+        { month: "Fev", position: 15 },
+        { month: "Mar", position: 16 },
+        { month: "Abr", position: 12 },
+        { month: "Mai", position: 11 },
+        { month: "Jun", position: 10 },
+        { month: "Jul", position: 9 },
+        { month: "Ago", position: 8 },
+      ],
+    },
+    metrics: {
+      trackedKeywords: 150,
+      firstPageKeywords: 42,
+      firstPagePercentage: 28,
+      implementedImprovements: 12,
+      totalImprovements: 25,
+      positionChange: "+8.3%",
+    },
+    recommendations: [
+      "Analisar estratégia de conteúdo dos concorrentes com melhor desempenho",
+      "Identificar oportunidades de keywords não exploradas pelos concorrentes",
+      "Melhorar a densidade de keywords em páginas estratégicas",
+    ],
+  },
+];
+
+export default function Reports() {
+  const [selectedProjectId, setSelectedProjectId] = useState<string | undefined>("all");
+  const [isGenerateDialogOpen, setIsGenerateDialogOpen] = useState(false);
+  const { toast } = useToast();
+
+  const form = useForm<ReportFormValues>({
+    resolver: zodResolver(reportFormSchema),
+    defaultValues: {
+      projectId: selectedProjectId || "all",
+      title: "",
+      description: "",
+      type: "performance",
+      period: "monthly",
+    },
+  });
+
+  const handleGenerateReport = (values: ReportFormValues) => {
+    toast({
+      title: "Relatório sendo gerado",
+      description: "Seu relatório está sendo gerado e estará disponível em breve.",
+    });
+    
+    setIsGenerateDialogOpen(false);
+    setTimeout(() => {
+      toast({
+        title: "Relatório gerado",
+        description: "Seu relatório foi gerado com sucesso.",
+      });
+    }, 2000);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold">Relatórios</h2>
+        <Button onClick={() => setIsGenerateDialogOpen(true)}>
+          <PlusCircle className="mr-2 h-4 w-4" />
+          Gerar Novo Relatório
+        </Button>
+      </div>
+
+      {/* Seletor de Projeto */}
+      <div className="bg-card rounded-lg p-4 shadow-sm">
+        <ProjectSelector
+          value={selectedProjectId}
+          onChange={setSelectedProjectId}
+          includeAllOption
+          label="Filtrar por Projeto"
+        />
+      </div>
+
+      {/* Lista de Relatórios */}
+      <div className="space-y-6">
+        {mockReports.map((report) => (
+          <ReportCard
+            key={report.id}
+            title={report.title}
+            description={report.description}
+            date={report.date}
+            chartData={report.chart.data}
+            metrics={report.metrics}
+            recommendations={report.recommendations}
+            onExport={() => {
+              toast({
+                title: "Exportando relatório",
+                description: "O relatório está sendo exportado para PDF.",
+              });
+              setTimeout(() => {
+                toast({
+                  title: "Relatório exportado",
+                  description: "O relatório foi exportado com sucesso.",
+                });
+              }, 1500);
+            }}
+            onShare={() => {
+              toast({
+                title: "Compartilhando relatório",
+                description: "Link para compartilhamento foi copiado para a área de transferência.",
+              });
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Modal para gerar relatório */}
+      <Dialog open={isGenerateDialogOpen} onOpenChange={setIsGenerateDialogOpen}>
+        <DialogContent className="sm:max-w-[550px]">
+          <DialogHeader>
+            <DialogTitle>Gerar Novo Relatório</DialogTitle>
+          </DialogHeader>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleGenerateReport)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="projectId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Projeto</FormLabel>
+                    <ProjectSelector
+                      value={field.value}
+                      onChange={field.onChange}
+                      includeAllOption
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Título do Relatório</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Título do relatório" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Descrição (opcional)</FormLabel>
+                    <FormControl>
+                      <Textarea 
+                        placeholder="Breve descrição do relatório" 
+                        {...field} 
+                        value={field.value || ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tipo de Relatório</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione o tipo" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="performance">Desempenho Geral</SelectItem>
+                          <SelectItem value="keywords">Análise de Keywords</SelectItem>
+                          <SelectItem value="improvements">Melhorias Implementadas</SelectItem>
+                          <SelectItem value="competitors">Análise de Concorrentes</SelectItem>
+                          <SelectItem value="backlinks">Perfil de Backlinks</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="period"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Período</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione o período" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="weekly">Semanal</SelectItem>
+                          <SelectItem value="monthly">Mensal</SelectItem>
+                          <SelectItem value="quarterly">Trimestral</SelectItem>
+                          <SelectItem value="yearly">Anual</SelectItem>
+                          <SelectItem value="custom">Personalizado</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-2">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setIsGenerateDialogOpen(false)}
+                >
+                  Cancelar
+                </Button>
+                <Button type="submit">
+                  <FileText className="mr-2 h-4 w-4" />
+                  Gerar Relatório
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
