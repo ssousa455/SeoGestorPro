@@ -60,48 +60,95 @@ O Gestor SEO Pro é um sistema completo para gerenciamento de projetos SEO, dese
 
 ## Implantação no Netlify (Para uso online)
 
-Se você desejar disponibilizar o sistema na nuvem para uso em múltiplos dispositivos, o Netlify é uma opção simples e gratuita para hospedagem. Siga estes passos:
+Se você desejar disponibilizar o sistema na nuvem para uso em múltiplos dispositivos, o Netlify é uma opção simples e gratuita para hospedagem. Este guia foi criado especificamente para pessoas sem conhecimento técnico.
 
-### Passo 1: Preparar o Projeto para Implantação
+### Passo 1: Preparar o Projeto para Implantação (No seu computador)
 
-1. Abra o prompt de comando como administrador
-2. Navegue até a pasta do projeto:
+1. Abra o prompt de comando como administrador (clique com o botão direito no menu Iniciar e selecione "Prompt de Comando (Admin)")
+2. Digite o comando abaixo e pressione Enter para ir até a pasta do projeto:
    ```
    cd C:\GestorSEOPro
    ```
-3. Execute o comando para construir o projeto:
+   (ou substitua pelo caminho onde você extraiu os arquivos)
+
+3. Digite o comando abaixo e pressione Enter para criar a versão de produção:
    ```
    npm run build
    ```
-   Este comando criará uma pasta `dist` com os arquivos otimizados para produção.
+   Aguarde alguns segundos até a mensagem de conclusão. Isso criará uma pasta chamada `dist` com os arquivos do sistema prontos para publicação.
 
-### Passo 2: Criar Conta e Implantar no Netlify
+### Passo 2: Criando uma Conta no Netlify
 
-1. Acesse [Netlify](https://www.netlify.com/) e crie uma conta gratuita (pode usar sua conta Google para facilitar)
-2. Após fazer login, clique no botão "Add new site" e selecione "Deploy manually"
-3. Arraste e solte a pasta `dist` (criada no Passo 1) na área indicada no site do Netlify
-4. Aguarde alguns segundos enquanto o Netlify faz o upload e implanta seu site
-5. Após a conclusão, você receberá um URL aleatório (exemplo: https://random-name-123456.netlify.app)
+1. Acesse o site [Netlify](https://www.netlify.com/) pelo seu navegador
+2. Clique no botão "Sign up" (ou "Cadastrar") no canto superior direito
+3. Escolha a opção "Sign up with Google" (ou "Cadastrar com Google") para maior facilidade
+4. Conclua o processo de registro seguindo as instruções na tela
+5. Após o registro, você verá a tela de boas-vindas do Netlify
 
-### Passo 3: Configurar o Banco de Dados (Opcional)
+### Passo 3: Publicando seu Site (Com Imagens)
 
-Para preservar os dados entre sessões no ambiente online:
+1. No painel do Netlify, clique no grande botão azul "Import from Git" (ou "Add new site" e depois "Deploy manually")
+   
+   ![Tela do Netlify com botão Import from Git](https://i.imgur.com/zPYlJFf.png)
 
-1. Crie uma conta gratuita no [Neon](https://neon.tech/) ou [Supabase](https://supabase.com/)
-2. Siga as instruções para criar um banco de dados PostgreSQL
-3. Copie a string de conexão fornecida
-4. No painel do Netlify, vá em "Site settings" > "Environment variables"
-5. Adicione uma variável `DATABASE_URL` com o valor da string de conexão
+2. Na tela que aparece, escolha a opção "Deploy manually" na parte inferior:
 
-### Passo 4: Personalize seu Domínio (Opcional)
+   ![Opção Deploy Manually](https://i.imgur.com/KvPXt7L.png)
 
-1. No painel do Netlify, vá em "Domain settings"
-2. Você pode usar um subdomínio gratuito (.netlify.app) ou configurar seu próprio domínio personalizado
+3. Agora vem a parte mais importante:
+   - Abra o Windows Explorer e navegue até a pasta do projeto (exemplo: C:\GestorSEOPro)
+   - Entre na pasta `dist` que foi criada no Passo 1
+   - Selecione TODOS os arquivos e pastas dentro da pasta `dist` (não a pasta dist em si)
+   - Arraste esses arquivos e solte na área indicada no site do Netlify onde está escrito "Drag and drop your site output folder here"
 
-### Notas Importantes:
-- A versão online utilizará o banco de dados configurado no Passo 3
-- Os relatórios PDF serão baixados para a pasta de downloads do navegador do usuário
-- A versão gratuita do Netlify é adequada para uso pessoal; para uso comercial intenso, considere os planos pagos
+   ![Área para soltar arquivos](https://i.imgur.com/HZk9WPD.png)
+
+4. Aguarde enquanto o Netlify faz o upload dos arquivos (pode levar alguns minutos dependendo de sua conexão)
+
+5. Quando a publicação for concluída, você verá uma mensagem de sucesso e receberá um endereço único para seu site, semelhante a: https://random-name-123456.netlify.app
+
+   ![Site publicado](https://i.imgur.com/Ld8LJYr.png)
+
+6. Clique nesse link para acessar seu site publicado
+
+### Passo 4: Configurando Banco de Dados (Apenas se precisar salvar dados online)
+
+1. Crie uma conta gratuita no [Neon](https://neon.tech/) seguindo o processo de registro
+2. Após o registro, clique em "Create a Project"
+3. Dê um nome ao projeto (ex: "gestor-seo") e clique em "Create Project"
+4. Após a criação, você verá uma tela com informações de conexão. Procure a linha "Connection String" e clique em "Copy"
+5. Volte ao painel do Netlify, e:
+   - Clique no seu site recém-publicado
+   - No menu lateral esquerdo, clique em "Site settings"
+   - Procure e clique na opção "Environment variables"
+   - Clique no botão "Add a variable"
+   - Em "Key" digite: DATABASE_URL
+   - Em "Value" cole a string de conexão que você copiou do Neon
+   - Clique em "Save"
+
+6. Após salvar, é necessário republicar o site:
+   - No menu lateral, clique em "Deploys"
+   - Clique no botão "Trigger deploy" e selecione "Deploy site"
+
+### Passo 5: Personalizando o Endereço (Opcional)
+
+1. No painel do seu site no Netlify, clique em "Domain settings" no menu lateral
+2. Você pode:
+   - Editar a primeira parte do endereço fornecido pelo Netlify (gratuito)
+   - Ou conectar seu próprio domínio se você tiver um
+
+### Dicas e Solução de Problemas
+
+- **Atualizando seu site:** Se fizer alterações no projeto local e quiser atualizar o site online, repita os Passos 1 e 3
+- **Problemas de conexão:** Se o site online não conectar ao banco de dados, verifique se a variável DATABASE_URL está correta
+- **Arquivos que faltam:** Certifique-se de arrastar TODOS os arquivos de dentro da pasta `dist`, não a pasta em si
+- **Suporte do Netlify:** O Netlify oferece suporte gratuito através de seu site caso você encontre problemas
+
+### Vantagens do Seu Site no Netlify
+- Disponível 24 horas por dia, 7 dias por semana
+- Acessível de qualquer dispositivo (computador, tablet, celular)
+- Possibilidade de compartilhar com clientes e equipe
+- Alta segurança e velocidade
 
 ## Utilizando o Sistema no Dia a Dia
 

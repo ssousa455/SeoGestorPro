@@ -1,7 +1,8 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { format } from 'date-fns';
-import { pt } from 'date-fns/locale';
+// Remover a dependência do locale que pode estar causando problemas
+// import { pt } from 'date-fns/locale';
 
 // Tipos necessários para o relatório
 interface ReportMetrics {
@@ -43,8 +44,8 @@ export const generateReportPDF = (report: ReportData, projectName?: string): voi
   const normalFontSize = 12;
   const smallFontSize = 10;
   
-  // Configurar data formatada em português
-  const currentDate = format(new Date(), "dd 'de' MMMM 'de' yyyy", { locale: pt });
+  // Configurar data formatada (simplificada)
+  const currentDate = format(new Date(), "dd/MM/yyyy");
   
   // Adicionar logo e cabeçalho
   doc.setFontSize(titleFontSize);
