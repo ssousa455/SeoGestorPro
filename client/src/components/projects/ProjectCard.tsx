@@ -44,7 +44,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <Button 
             variant="default" 
             size="sm"
-            onClick={() => setLocation(`/projeto/${project.id}`)}
+            onClick={() => {
+              const route = `/projeto/${project.id}`;
+              console.log(`Navegando para: ${route}`);
+              setLocation(route);
+            }}
           >
             Detalhes
           </Button>

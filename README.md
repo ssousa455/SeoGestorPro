@@ -58,6 +58,51 @@ O Gestor SEO Pro é um sistema completo para gerenciamento de projetos SEO, dese
 2. Pressione `Win + R`, digite `shell:startup` e pressione Enter
 3. Copie ou crie um atalho para o arquivo .bat nesta pasta de inicialização
 
+## Implantação no Netlify (Para uso online)
+
+Se você desejar disponibilizar o sistema na nuvem para uso em múltiplos dispositivos, o Netlify é uma opção simples e gratuita para hospedagem. Siga estes passos:
+
+### Passo 1: Preparar o Projeto para Implantação
+
+1. Abra o prompt de comando como administrador
+2. Navegue até a pasta do projeto:
+   ```
+   cd C:\GestorSEOPro
+   ```
+3. Execute o comando para construir o projeto:
+   ```
+   npm run build
+   ```
+   Este comando criará uma pasta `dist` com os arquivos otimizados para produção.
+
+### Passo 2: Criar Conta e Implantar no Netlify
+
+1. Acesse [Netlify](https://www.netlify.com/) e crie uma conta gratuita (pode usar sua conta Google para facilitar)
+2. Após fazer login, clique no botão "Add new site" e selecione "Deploy manually"
+3. Arraste e solte a pasta `dist` (criada no Passo 1) na área indicada no site do Netlify
+4. Aguarde alguns segundos enquanto o Netlify faz o upload e implanta seu site
+5. Após a conclusão, você receberá um URL aleatório (exemplo: https://random-name-123456.netlify.app)
+
+### Passo 3: Configurar o Banco de Dados (Opcional)
+
+Para preservar os dados entre sessões no ambiente online:
+
+1. Crie uma conta gratuita no [Neon](https://neon.tech/) ou [Supabase](https://supabase.com/)
+2. Siga as instruções para criar um banco de dados PostgreSQL
+3. Copie a string de conexão fornecida
+4. No painel do Netlify, vá em "Site settings" > "Environment variables"
+5. Adicione uma variável `DATABASE_URL` com o valor da string de conexão
+
+### Passo 4: Personalize seu Domínio (Opcional)
+
+1. No painel do Netlify, vá em "Domain settings"
+2. Você pode usar um subdomínio gratuito (.netlify.app) ou configurar seu próprio domínio personalizado
+
+### Notas Importantes:
+- A versão online utilizará o banco de dados configurado no Passo 3
+- Os relatórios PDF serão baixados para a pasta de downloads do navegador do usuário
+- A versão gratuita do Netlify é adequada para uso pessoal; para uso comercial intenso, considere os planos pagos
+
 ## Utilizando o Sistema no Dia a Dia
 
 ### Navegação

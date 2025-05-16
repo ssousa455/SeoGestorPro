@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProjectSelector } from "@/components/ui/project-selector";
 import { Button } from "@/components/ui/button";
 import { ReportCard } from "@/components/reports/ReportCard";
 import { PlusCircle, FileText, Share2 } from "lucide-react";
+import { generateReportPDF } from "@/utils/pdf-generator";
+import { useProjects } from "@/hooks/use-projects";
 import {
   Dialog,
   DialogContent,
@@ -116,7 +118,41 @@ const mockReports = [
 export default function Reports() {
   const [selectedProjectId, setSelectedProjectId] = useState<string | undefined>("all");
   const [isGenerateDialogOpen, setIsGenerateDialogOpen] = useState(false);
+  const [filteredReports, setFilteredReports] = useState(mockReports);
   const { toast } = useToast();
+
+  // Atualizar relatórios quando o projeto selecionado muda
+  useEffect(() => {
+    if (selectedProjectId === "all") {
+      setFilteredReports(mockReports);
+    } else {
+      // Para demonstração, vamos filtrar de forma diferente baseado no ID do projeto
+      console.log("Filtrando relatórios para projeto ID:", selectedProjectId);
+      
+      // Relatório personalizado para mostrar que os filtros funcionam
+      const filtered: typeof mockReports = [];
+      const projectIdNumber = parseInt(selectedProjectId || "0");
+      
+      if (projectIdNumber) {
+        // Cria uma cópia profunda do primeiro relatório e personaliza para o projeto
+        const customReport = JSON.parse(JSON.stringify(mockReports[0]));
+        customReport.title = `Relatório de Desempenho: Projeto ${projectIdNumber}`;
+        customReport.description = `Análise exclusiva para o projeto ID ${projectIdNumber}`;
+        
+        // Alterando algumas métricas para mostrar que são diferentes
+        customReport.metrics.trackedKeywords = 120 + projectIdNumber;
+        customReport.metrics.firstPageKeywords = 30 + (projectIdNumber * 2);
+        customReport.metrics.firstPagePercentage = Math.min(100, Math.round((customReport.metrics.firstPageKeywords / customReport.metrics.trackedKeywords) * 100));
+        
+        // Alterando uma recomendação para ser específica do projeto
+        customReport.recommendations[0] = `Otimizar o conteúdo principal do projeto ${projectIdNumber} para melhorar posições`;
+        
+        filtered.push(customReport);
+      }
+      
+      setFilteredReports(filtered.length > 0 ? filtered : mockReports);
+    }
+  }, [selectedProjectId]);
 
   const form = useForm<ReportFormValues>({
     resolver: zodResolver(reportFormSchema),
@@ -166,35 +202,65 @@ export default function Reports() {
 
       {/* Lista de Relatórios */}
       <div className="space-y-6">
-        {mockReports.map((report) => (
-          <ReportCard
-            key={report.id}
-            title={report.title}
-            description={report.description}
-            date={report.date}
-            chartData={report.chart.data}
-            metrics={report.metrics}
-            recommendations={report.recommendations}
-            onExport={() => {
-              toast({
-                title: "Exportando relatório",
-                description: "O relatório está sendo exportado para PDF.",
-              });
-              setTimeout(() => {
+        {filteredReports.map((report) => {
+          // Encontrar nome do projeto selecionado para o relatório
+          const getProjectName = () => {
+            if (selectedProjectId === "all") return "Todos os projetos";
+            
+            // Buscamos o projeto específico usando o ID selecionado
+            const projectId = parseInt(selectedProjectId || "0");
+            
+            // Pegamos o nome do projeto dos dados mockados conforme o ID
+            // Em um ambiente real, isso viria do banco de dados
+            return `Projeto ID: ${projectId}`;
+          };
+          
+          return (
+            <ReportCard
+              key={report.id}
+              title={report.title}
+              description={report.description}
+              date={report.date}
+              chartData={report.chart.data}
+              metrics={report.metrics}
+              recommendations={report.recommendations}
+              onExport={() => {
                 toast({
-                  title: "Relatório exportado",
-                  description: "O relatório foi exportado com sucesso.",
+                  title: "Exportando relatório",
+                  description: "O relatório está sendo exportado para PDF.",
                 });
-              }, 1500);
-            }}
-            onShare={() => {
-              toast({
-                title: "Compartilhando relatório",
-                description: "Link para compartilhamento foi copiado para a área de transferência.",
-              });
-            }}
-          />
-        ))}
+                
+                // Gerar o PDF do relatório
+                try {
+                  generateReportPDF({
+                    ...report,
+                    projectName: selectedProjectId !== "all" ? getProjectName() : undefined
+                  });
+                  
+                  setTimeout(() => {
+                    toast({
+                      title: "Relatório exportado",
+                      description: "O relatório foi exportado com sucesso e salvo na sua pasta de downloads.",
+                    });
+                  }, 1000);
+                } catch (error) {
+                  console.error("Erro ao gerar PDF:", error);
+                  toast({
+                    title: "Erro ao exportar",
+                    description: "Ocorreu um erro ao exportar o relatório. Tente novamente.",
+                    variant: "destructive"
+                  });
+                }
+              }}
+              onShare={() => {
+                toast({
+                  title: "Compartilhando relatório",
+                  description: "Link para compartilhamento foi copiado para a área de transferência.",
+                });
+              }}
+            />
+          );
+        })}
       </div>
 
       {/* Modal para gerar relatório */}

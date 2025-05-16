@@ -9,6 +9,7 @@ import Sidebar from "@/components/layout/Sidebar";
 import Dashboard from "@/pages/dashboard";
 import MyProjects from "@/pages/my-projects";
 import ClientProjects from "@/pages/client-projects";
+import ProjectDetails from "@/pages/project-details";
 import KeywordAnalysis from "@/pages/keyword-analysis";
 import Clusters from "@/pages/clusters";
 import SeoImprovements from "@/pages/seo-improvements";
@@ -23,6 +24,7 @@ function Router() {
 
   // Close sidebar on route change on mobile
   useEffect(() => {
+    console.log("Rota atual:", location);
     if (window.innerWidth < 768) {
       setSidebarOpen(false);
     }
@@ -48,6 +50,7 @@ function Router() {
             <Route path="/" component={Dashboard} />
             <Route path="/meus-projetos" component={MyProjects} />
             <Route path="/projetos-clientes" component={ClientProjects} />
+            <Route path="/projeto/:id" component={ProjectDetails} />
             <Route path="/analise-keywords" component={KeywordAnalysis} />
             <Route path="/clusters" component={Clusters} />
             <Route path="/melhorias-seo" component={SeoImprovements} />
