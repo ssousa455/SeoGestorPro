@@ -30,7 +30,11 @@ export default defineConfig({
       input: {
         main: path.resolve(import.meta.dirname, "client", "index.html"),
       },
+      output: {
+        manualChunks: undefined,
+      },
     },
   },
   root: path.resolve(import.meta.dirname, "client"),
+  base: "/",
 });
