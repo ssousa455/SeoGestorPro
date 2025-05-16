@@ -36,23 +36,32 @@ O Gestor SEO Pro é um sistema completo para gerenciamento de projetos SEO, dese
 
 ### Iniciar o Gestor SEO Pro
 1. Abra o Prompt de Comando como administrador
-2. Navegue até a pasta do projeto
+2. Navegue até a pasta do projeto:
+   ```
+   cd C:\GestorSEOPro
+   ```
+   (ou a pasta onde você extraiu os arquivos)
 3. Execute o comando:
    ```
-   npm run start
+   npm run dev
    ```
 4. O sistema iniciará automaticamente em seu navegador padrão no endereço http://localhost:5000
 
-### Configurar para Iniciar Automaticamente com o Windows (Opcional)
+### Criar Atalho para Iniciar Rapidamente (Recomendado)
 1. Crie um arquivo batch (.bat) com o seguinte conteúdo:
    ```
    @echo off
-   cd C:\caminho\para\gestor-seo-pro
-   npm run start
+   cd C:\GestorSEOPro
+   npm run dev
+   pause
    ```
-2. Salve o arquivo como `IniciarGestorSEO.bat`
-3. Pressione `Win + R`, digite `shell:startup` e pressione Enter
-4. Copie ou crie um atalho para o arquivo .bat nesta pasta de inicialização
+2. Salve o arquivo como `IniciarGestorSEO.bat` na área de trabalho
+3. Dê um duplo clique no atalho para iniciar o sistema rapidamente
+
+### Configurar para Iniciar Automaticamente com o Windows (Opcional)
+1. Crie um arquivo batch (.bat) seguindo as instruções acima
+2. Pressione `Win + R`, digite `shell:startup` e pressione Enter
+3. Copie ou crie um atalho para o arquivo .bat nesta pasta de inicialização
 
 ## Utilizando o Sistema no Dia a Dia
 
@@ -67,30 +76,36 @@ O Gestor SEO Pro é um sistema completo para gerenciamento de projetos SEO, dese
 - **Configurações**: Personalize o sistema conforme suas necessidades
 
 ### Backup dos Dados
-O sistema utiliza um banco de dados PostgreSQL para armazenar seus dados de forma segura e persistente. Para garantir que não perca informações:
+O sistema armazena dados em memória durante sua execução. Para garantir que não perca informações importantes:
 
-1. **Backup Automático**: Configure backups automáticos do PostgreSQL seguindo estas etapas:
-   - Abra o "SQL Shell (psql)"
-   - Conecte-se ao banco de dados
-   - Execute o comando para criar um agendamento de backup:
-   ```sql
-   SELECT cron.schedule('0 0 * * *', 'pg_dump -d gestor_seo_pro > C:\backups\gestor_seo_backup_$(date +%Y%m%d).sql');
-   ```
+1. **Exportação de Dados**: O sistema salva automaticamente dados na pasta do projeto.
+   - Os dados são armazenados em arquivos JSON na pasta "data" do projeto
+   - Estes arquivos são atualizados automaticamente quando você:
+     - Cria ou edita projetos
+     - Adiciona ou atualiza keywords
+     - Organiza clusters
+     - Registra melhorias SEO
 
-2. **Backup Manual**:
-   - Abra o Prompt de Comando como administrador
-   - Execute:
-   ```
-   pg_dump -U postgres -d gestor_seo_pro > C:\caminho\para\backup\backup_gestor_seo.sql
-   ```
+2. **Backup Manual Recomendado**:
+   - Copie regularmente a pasta inteira do projeto para um local seguro
+   - Use um pendrive ou armazenamento em nuvem como backup adicional
+   - Recomendamos fazer backup semanalmente ou após adicionar muitos dados
 
 ### Encerramento Seguro
 Para fechar o sistema corretamente e evitar perda de dados:
 
-1. Salve todas as alterações em andamento
+1. Salve todas as alterações em andamento no sistema
 2. Feche a janela do navegador
 3. No Prompt de Comando onde o sistema está rodando, pressione `Ctrl + C`
-4. Confirme o encerramento digitando `S` ou `Y`
+4. Confirme o encerramento digitando `S` ou `Y` 
+5. Aguarde a mensagem "Processo finalizado" antes de fechar a janela do Prompt de Comando
+
+### Dicas de Uso Diário
+1. **Modo Escuro**: Alterne entre tema claro e escuro através do ícone no canto superior direito
+2. **Seleção de Projeto**: Sempre selecione um projeto antes de trabalhar com keywords ou clusters
+3. **Organização de Keywords**: Agrupe keywords relacionadas em clusters para melhorar sua estratégia de conteúdo
+4. **Backup Regular**: Copie a pasta do projeto regularmente para um local seguro para preservar seus dados
+5. **Atalhos de Teclado**: Use Tab para navegar entre campos e Enter para confirmar formulários
 
 ## Resolução de Problemas Comuns
 
