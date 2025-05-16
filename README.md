@@ -34,7 +34,13 @@ O Gestor SEO Pro é um sistema completo para gerenciamento de projetos SEO, dese
    
 ## Iniciando o Sistema
 
-### Iniciar o Gestor SEO Pro
+### Método Rápido (Recomendado)
+1. Navegue até a pasta onde você extraiu os arquivos
+2. Dê um duplo clique no arquivo `iniciar-windows.bat` 
+3. O sistema abrirá automaticamente em seu navegador padrão no endereço http://localhost:3000
+4. Para fechar o sistema, pressione CTRL+C na janela de comando e feche o navegador
+
+### Método Alternativo (via Prompt de Comando)
 1. Abra o Prompt de Comando como administrador
 2. Navegue até a pasta do projeto:
    ```
@@ -43,20 +49,9 @@ O Gestor SEO Pro é um sistema completo para gerenciamento de projetos SEO, dese
    (ou a pasta onde você extraiu os arquivos)
 3. Execute o comando:
    ```
-   npm run dev
+   npx tsx server/index.ts
    ```
-4. O sistema iniciará automaticamente em seu navegador padrão no endereço http://localhost:3000
-
-### Criar Atalho para Iniciar Rapidamente (Recomendado)
-1. Crie um arquivo batch (.bat) com o seguinte conteúdo:
-   ```
-   @echo off
-   cd C:\GestorSEOPro
-   npm run dev
-   pause
-   ```
-2. Salve o arquivo como `IniciarGestorSEO.bat` na área de trabalho
-3. Dê um duplo clique no atalho para iniciar o sistema rapidamente
+4. Abra seu navegador e acesse http://localhost:3000
 
 ### Configurar para Iniciar Automaticamente com o Windows (Opcional)
 1. Crie um arquivo batch (.bat) seguindo as instruções acima
