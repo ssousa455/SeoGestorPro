@@ -34,9 +34,9 @@ O Gestor SEO Pro é um sistema completo para gerenciamento de projetos SEO, dese
    
 ## Iniciando o Sistema
 
-### Método Rápido (Recomendado)
+### Método Simples (Recomendado)
 1. Navegue até a pasta onde você extraiu os arquivos
-2. Dê um duplo clique no arquivo `iniciar-windows.bat` 
+2. Dê um duplo clique no arquivo `iniciar.bat` 
 3. O sistema abrirá automaticamente em seu navegador padrão no endereço http://localhost:3000
 4. Para fechar o sistema, pressione CTRL+C na janela de comando e feche o navegador
 

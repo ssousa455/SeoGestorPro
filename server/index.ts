@@ -59,11 +59,7 @@ app.use((req, res, next) => {
   // Usar a porta definida no ambiente ou a porta padrão 3000
   // isso serve tanto a API quanto o cliente.
   const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
+  server.listen(port, () => {
     log(`serving on port ${port}`);
   });
 })();
