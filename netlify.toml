@@ -13,7 +13,7 @@
   included_files = ["server/**/*", "shared/**/*"]
 
 [[plugins]]
-  package = "./netlify/plugins/drizzle-fix"
+  package = "./netlify/plugins/drizzle-fix.js"
 
 [[redirects]]
   from = "/api/*"
