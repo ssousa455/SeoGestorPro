@@ -17,12 +17,24 @@ module.exports = {
     packageJson.dependencies['drizzle-orm'] = '^0.39.1';
     packageJson.dependencies['drizzle-zod'] = '^0.7.0';
     
+    // Garantir que outras dependências críticas estejam presentes
+    packageJson.dependencies['@neondatabase/serverless'] = '^0.10.4';
+    packageJson.dependencies['serverless-http'] = '^3.2.0';
+    packageJson.dependencies['ws'] = '^8.18.0';
+    packageJson.dependencies['express'] = '^4.21.2';
+    
     // Atualizar package.json
     utils.writeFileSync('package.json', JSON.stringify(packageJson, null, 2));
     
     // Instalar dependências atualizadas
     console.log('📦 Instalando dependências atualizadas...');
     utils.run.command('npm install');
+    
+    // Verificar se o diretório de funções existe
+    if (!utils.fs.existsSync('netlify/functions')) {
+      console.log('Criando diretório de funções...');
+      utils.run.command('mkdir -p netlify/functions');
+    }
     
     console.log('✨ Ambiente configurado com sucesso para Drizzle ORM!');
   }
